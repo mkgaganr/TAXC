@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taxc/screens/home/policies.dart';
+import 'package:taxc/screens/home/rules.dart';
+import 'package:taxc/screens/home/settings.dart';
 import 'package:taxc/screens/home/sidebar/sidebarlayout.dart';
 import 'package:taxc/services/auth.dart';
 import 'package:taxc/screens/home/constants.dart';
@@ -8,6 +11,8 @@ import 'package:taxc/shared/loading.dart';
 import 'package:taxc/services/database.dart';
 import 'package:taxc/models/user.dart';
 import 'package:provider/provider.dart';
+
+import 'itax.dart';
 
 void main() {
   runApp(
@@ -192,7 +197,7 @@ class _HomelayoutState  extends State<Homelayout> {
                     child: Column(
                       children: [
                         SizedBox(height: 10,),
-                        Text("Calaculator", style: TextStyle(fontSize: 40,
+                        Text("Calculator", style: TextStyle(fontSize: 40,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[900]),),
                       ],
@@ -223,20 +228,20 @@ class _HomelayoutState  extends State<Homelayout> {
                             Container(
                               margin: EdgeInsets.only(top: 20, bottom: 16),
                               child: Icon(Icons.account_circle, size: 90,
-                                color: Colors.lightGreenAccent.shade400,),
+                                color: Colors.lightBlue.shade400,),
                             ),
                             Text(userData.name,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
-                                color: Colors.lightGreenAccent.shade400,
+                                color: Colors.lightBlue.shade400,
                               ),
                             ),
                             Text(userData.email,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 18.0,
-                                color: Colors.lightGreenAccent.shade400,
+                                color: Colors.lightBlue.shade400,
                               ),
                             ),
                             SizedBox(height: 18,),
@@ -248,7 +253,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     selected: _selectedindex == 0,
                                     selectedTileColor: Colors.grey,
                                     leading: Icon(Icons.account_box,
-                                      color: Colors.lightGreenAccent.shade400,
+                                      color: Colors.lightBlue.shade400,
                                     ),
                                     title: Text('My Account', style: TextStyle(
                                       fontSize: 18,
@@ -268,7 +273,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     selected: _selectedindex == 1,
                                     selectedTileColor: Colors.grey,
                                     leading: Icon(Icons.build,
-                                      color: Colors.lightGreenAccent.shade400,
+                                      color: Colors.lightBlue.shade400,
                                     ),
                                     title: Text('Settings', style: TextStyle(
                                       fontSize: 18,
@@ -277,6 +282,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     ),),
                                     onTap: () {
                                       setState(() {
+                                        _bottomSelect = SettingsScreen();
                                         _selectedindex = 1;
                                       });
                                       Navigator.pop(context);
@@ -286,7 +292,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     selected: _selectedindex == 2,
                                     selectedTileColor: Colors.grey,
                                     leading: Icon(Icons.lock_outline,
-                                        color: Colors.lightGreenAccent.shade400
+                                        color: Colors.lightBlue.shade400
                                     ),
                                     title: Text('Logout',
                                       style: TextStyle(
@@ -303,17 +309,37 @@ class _HomelayoutState  extends State<Homelayout> {
                                     },
                                   ),
                                   ListTile(
+                                    selected: _selectedindex == 3,
+                                    selectedTileColor: Colors.grey,
+                                    leading: Icon(Icons.calculate,
+                                      color: Colors.lightBlue.shade400,
+                                    ),
+                                    title: Text('Gst tax', style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[800],
+                                    ),),
+                                    onTap: () {
+                                      setState(() {
+                                        _bottomSelect = Rules();
+                                        _selectedindex = 3;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
                                     selected: _selectedindex == 4,
                                     selectedTileColor: Colors.grey,
-                                    leading: Icon(Icons.fiber_new_outlined,
-                                      color: Colors.lightGreenAccent.shade400,),
-                                    title: Text('Tax News',
+                                    leading: Icon(Icons.calculate_sharp,
+                                      color: Colors.lightBlue.shade400,),
+                                    title: Text('Income Tax',
                                       style: TextStyle(fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey[800],
                                       ),),
                                     onTap: () {
                                       setState(() {
+                                        _bottomSelect =Itax();
                                         _selectedindex = 4;
                                       });
                                       Navigator.pop(context);
@@ -327,13 +353,30 @@ class _HomelayoutState  extends State<Homelayout> {
                                       width: 290.0,
                                       color: Colors.grey,),),
                                   ListTile(
-                                    selected: _selectedindex == 6,
+                                    selected: _selectedindex == 5,
                                     selectedTileColor: Colors.grey,
                                     title: Text('Privacy Policies',
                                       style: TextStyle(fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey[800],
                                       ),),
+                                    onTap: () {
+                                      setState(() {
+                                        _bottomSelect = Policies();
+                                        _selectedindex = 5;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                    selected: _selectedindex == 6,
+                                    selectedTileColor: Colors.grey,
+                                    title: Text('Help Center', style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[800],
+                                    ),
+                                    ),
                                     onTap: () {
                                       setState(() {
                                         _selectedindex = 6;
@@ -344,23 +387,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                   ListTile(
                                     selected: _selectedindex == 7,
                                     selectedTileColor: Colors.grey,
-                                    title: Text('Help Center', style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey[800],
-                                    ),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        _selectedindex = 7;
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  ListTile(
-                                    selected: _selectedindex == 8,
-                                    selectedTileColor: Colors.grey,
-                                    title: Text('Tax Calculator Zone',
+                                    title: Text(' Income Tax faqs',
                                       style: TextStyle(fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey[800],
@@ -368,7 +395,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     ),
                                     onTap: () {
                                       setState(() {
-                                        _selectedindex = 8;
+                                        _selectedindex = 7;
                                       });
                                       Navigator.pop(context);
                                     },
@@ -389,7 +416,7 @@ class _HomelayoutState  extends State<Homelayout> {
                 iconSize: 24.0,
                 currentIndex: _currentIndex,
                 type: BottomNavigationBarType.fixed,
-                selectedFontSize: 19,
+                selectedFontSize: 16,
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 unselectedFontSize: 12,
                 items: [
@@ -402,15 +429,15 @@ class _HomelayoutState  extends State<Homelayout> {
                   ),
                   new BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.calculate, color: Colors.lightBlue.shade400,),
-                    title: Text('Income Tax', style: TextStyle(color: Colors.white,),),
+                      Icons.receipt, color: Colors.lightBlue.shade400,),
+                    title: Text('Tax Slabs', style: TextStyle(color: Colors.white,),),
                     backgroundColor: Colors.grey[900],
                   ),
                   new BottomNavigationBarItem(
-                    icon: Icon(Icons.calculate,
+                    icon: Icon(Icons.read_more,
                       color: Colors.lightBlue.shade400,),
                     title: Text(
-                      'Gst Tax', style: TextStyle(color: Colors.white,),),
+                      'Tax Rules', style: TextStyle(color: Colors.white,),),
                     backgroundColor: Colors.grey[900],
                   ),
                   new BottomNavigationBarItem(
@@ -796,17 +823,39 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("Your salary",style: TextStyle(fontSize: 18,color: Colors.grey[800]))),
+      child: Center(child: Text("Tax rates latest(2020-21)"
+          "                                1.Upto 2.5 annual income-nil"
+          "                    2. Rs.2.5 lakh upto 5 lakh-5 percent "
+          "3. Rs.5.0 lakh upto 7.5 lakh - 10 percent"
+          "                                                       4. Rs.7.5 lakh upto 10.0 lakh - 15 percent"
+          "                                                          5. Rs.10.0 lakh upto 12.5 lakh - 20 percent"
+          "                                                      6.Rs.12.5 lakh upto 15 lakh - 25 percent"
+          "                                                     7.Above Rs.15 lakh - 30 percent"
+          "                                                     >This rates are for the individuals who are aged below 60"
+          "                                                     *The users must go through the same and apply  tax rate accordingly"
+
+          ,style: TextStyle(fontSize: 20,color: Colors.lightBlue[800]))),
     );
   }
 }
+
 
 class GreenPay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("",style: TextStyle(fontSize: 40,color: Colors.grey[800]))),
+      child: Center(child: Text( ">While the income tax act ,1961 is the law enacted by the legislature for governing"
+          "and administering income taxes in india,Income Tax Rules,1962"
+          "has been framed to help apply and enforce the law contained in the Act."
+          "Further,the rules cannot be read independently"
+          "                                        >Everyone who earns or gets an income in india is subject to income tax"
+          "Your income could be salary,pension or could be from savings account that's quietly accumulating a 4% interest"
+          "                      >Tax payers in India, for the purpose of income tax includes:"
+          "1.Individual"
+          " ",
+          style: TextStyle(fontSize: 20,color: Colors.lightBlue[800]))),
     );
+
   }
 }
 
@@ -814,7 +863,7 @@ class Contact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("9380417069",style: TextStyle(fontSize: 40,color: Colors.grey[800]))),
+      child: Center(child: Text("1.Users for any tax related questions can contact 9380417069 ",style: TextStyle(fontSize: 40,color: Colors.lightBlue[800]))),
     );
   }
 }
@@ -823,7 +872,7 @@ class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("Please leave any suggestions or complaints to gagan.cs18@bmsce.ac.in",style: TextStyle(fontSize: 40,color: Colors.grey[800]))),
+      child: Center(child: Text("Please leave any suggestions or complaints to gagan.cs18@bmsce.ac.in",style: TextStyle(fontSize: 40,color: Colors.lightBlue[800]))),
     );
   }
 }

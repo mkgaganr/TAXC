@@ -19,8 +19,6 @@ class SidebarLayout extends StatefulWidget {
 class _SidebarLayoutState extends State<SidebarLayout> with AfterLayoutMixin{
   LabeledGlobalKey _incometax = LabeledGlobalKey("incometax");
   LabeledGlobalKey _gsttax = LabeledGlobalKey("gsttax");
-  LabeledGlobalKey _cartkey= LabeledGlobalKey("cartkey");
-  LabeledGlobalKey _myorderskey = LabeledGlobalKey("myorderskey");
   int selectedindex = 0;
   RenderBox renderBox;
   double startYposition;
@@ -34,12 +32,7 @@ class _SidebarLayoutState extends State<SidebarLayout> with AfterLayoutMixin{
         case 1:
           renderBox = _gsttax.currentContext.findRenderObject();
           break;
-        case 2:
-          renderBox = _cartkey.currentContext.findRenderObject();
-          break;
-        case 3:
-          renderBox = _myorderskey.currentContext.findRenderObject();
-          break;
+
       }
       startYposition = renderBox.localToGlobal(Offset.zero).dy;
 
@@ -88,14 +81,14 @@ class _SidebarLayoutState extends State<SidebarLayout> with AfterLayoutMixin{
                 icon:Icon(
                   Icons.notifications_active,
                   color: Colors.black,
-                ),
+                ), onPressed: () { },
               ),
               SizedBox(height: 18,),
               IconButton(
                 icon:Icon(
                   Icons.dashboard,
                   color: Colors.black,
-                ),
+                ), onPressed: () { },
               ),
               SizedBox(height: 20,),
 
@@ -108,27 +101,15 @@ class _SidebarLayoutState extends State<SidebarLayout> with AfterLayoutMixin{
                     children: <Widget>[
                       SidebarItem(
                         key : _incometax,
-                        text: " Home ",
+                        text: "incometax",
                         onTabTap: () {ontap(0);},
                         isSelected: selectedindex == 0,
                       ),
                       SidebarItem(
                         key : _gsttax,
-                        text: " Subsidies ",
+                        text: " gsttax ",
                         onTabTap: () {ontap(1);},
                         isSelected: selectedindex == 1,
-                      ),
-                      SidebarItem(
-                        key: _cartkey,
-                        text: "My Cart",
-                        onTabTap: () {ontap(2);},
-                        isSelected: selectedindex == 2,
-                      ),
-                      SidebarItem(
-                        key: _myorderskey,
-                        text: "My orders",
-                        onTabTap: () {ontap(3);},
-                        isSelected: selectedindex == 3,
                       ),
                     ],
                   )

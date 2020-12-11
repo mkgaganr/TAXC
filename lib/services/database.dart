@@ -10,7 +10,7 @@ class DatabaseService {
   // collection reference
   final CollectionReference accountCollection = Firestore.instance.collection('account');
 
-  Future<void> updateUserData(String name, String phoneNumber, String email, String address) async {
+  Future<void> updateUserData(String name, String phoneNumber, String email, String address, String s) async {
     return await accountCollection.document(uid).setData({
       'name': name,
       'phoneNumber' : phoneNumber,

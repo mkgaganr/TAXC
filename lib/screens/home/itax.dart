@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Indian GST Calculator',
-    home: GSTForm(),
-    theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.teal,
-        accentColor: Colors.tealAccent),
-  ));
-}
-
-class GSTForm extends StatefulWidget {
+class Itax extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _GSTForm();
-  }
+  GSTForm createState() => GSTForm();
 }
 
-class _GSTForm extends State<GSTForm> {
-  var rates = [5, 12, 18];
-  var gstRate = 18;
+class GSTForm extends State<Itax> {
+  var rates = [0 , 5, 10, 15, 20 , 25 , 30];
+  var gstRate = 30;
   double includingRate = 0;
   double gstAmount = 0;
   double excludingRate = 0;
@@ -29,7 +15,7 @@ class _GSTForm extends State<GSTForm> {
   @override
   void initState() {
     super.initState();
-    gstRate = rates[2];
+    gstRate = rates[6];
   }
 
   TextEditingController includingGSTController = new TextEditingController();
@@ -38,11 +24,12 @@ class _GSTForm extends State<GSTForm> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     TextStyle textStyle = Theme.of(context).textTheme.title;
     return Scaffold(
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('GST Calculator'),
+        title: Text('Income Calculator'),
       ),
       body: Container(
         margin: EdgeInsets.all(10.0),
@@ -55,7 +42,7 @@ class _GSTForm extends State<GSTForm> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      'Select GST Rate',
+                      'Select Tax  Rate',
                       style: textStyle,
                     ),
                   ),
@@ -89,30 +76,31 @@ class _GSTForm extends State<GSTForm> {
               ),
             ),
             //Widget getGSTRateDropDown(),
+
             Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  style: textStyle,
-                  onChanged: (value) {
-                    setState(() {
-                      includingRate =
-                      value.length > 0 ? double.parse(value) : 0;
-                      double gst = (includingRate * gstRate / 100);
-                      double excluding = includingRate - gst;
-                      gstController.text = gst.toStringAsFixed(2);
-                      excludingGSTController.text =
-                          excluding.toStringAsFixed(2);
-                    });
-                  },
-                  controller: includingGSTController,
-                  decoration: InputDecoration(
-                      hintText: 'including GST',
-                      labelText: 'Price including GST',
-                      labelStyle: textStyle,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0))),
-                )),
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: textStyle,
+                onChanged: (value) {
+                  setState(() {
+                    excludingRate = value.length > 0 ? double.parse(value) : 0;
+                    double gst = (gstRate * excludingRate) / 100;
+                    double including = excludingRate - gst;
+
+                    gstController.text = gst.toStringAsFixed(3);
+                    includingGSTController.text = including.toStringAsFixed(3);
+                  });
+                },
+                controller: excludingGSTController,
+                decoration: InputDecoration(
+                    labelText: 'Annual income',
+                    hintText: 'enter ur salary',
+                    labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0))),
+              ),
+              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            ),
             Padding(
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -132,14 +120,14 @@ class _GSTForm extends State<GSTForm> {
                     }
 
 
-                    includingGSTController.text = including.toStringAsFixed(2);
-                    excludingGSTController.text = excluding.toStringAsFixed(2);
+                    includingGSTController.text = including.toStringAsFixed(3);
+                    excludingGSTController.text = excluding.toStringAsFixed(3);
                   });
                 },
                 controller: gstController,
                 decoration: InputDecoration(
-                    hintText: 'GST',
-                    labelText: 'GST ($gstRate%)',
+                    hintText: 'Tax',
+                    labelText: 'Tax ($gstRate%)',
                     labelStyle: textStyle,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0))),
@@ -147,29 +135,30 @@ class _GSTForm extends State<GSTForm> {
               padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
             ),
             Padding(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                style: textStyle,
-                onChanged: (value) {
-                  setState(() {
-                    excludingRate = value.length > 0 ? double.parse(value) : 0;
-                    double gst = (gstRate * excludingRate) / 100;
-                    double including = excludingRate + gst;
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  style: textStyle,
+                  onChanged: (value) {
+                    setState(() {
+                      includingRate =
+                      value.length > 0 ? double.parse(value) : 0;
+                      double gst = (includingRate * gstRate / 100);
+                      double excluding = includingRate - gst;
+                      gstController.text = gst.toStringAsFixed(3);
+                      excludingGSTController.text =
+                          excluding.toStringAsFixed(3);
+                    });
+                  },
+                  controller: includingGSTController,
+                  decoration: InputDecoration(
+                      hintText: 'Amount you get',
+                      labelText: 'Take Home',
+                      labelStyle: textStyle,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0))),
+                )),
 
-                    gstController.text = gst.toStringAsFixed(2);
-                    includingGSTController.text = including.toStringAsFixed(2);
-                  });
-                },
-                controller: excludingGSTController,
-                decoration: InputDecoration(
-                    labelText: 'Price excluding GST',
-                    hintText: 'excluding GST',
-                    labelStyle: textStyle,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0))),
-              ),
-              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            ),
             Padding(
               padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
               child: RaisedButton(
