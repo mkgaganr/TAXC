@@ -21,7 +21,7 @@ class Home extends StatelessWidget {
     return MaterialApp(
       title: _title,
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        primarySwatch: Colors.blue,
       ),
       home: MyStatefulWidget(),
       debugShowCheckedModeBanner: false,

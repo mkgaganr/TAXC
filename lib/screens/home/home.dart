@@ -4,6 +4,7 @@ import 'package:taxc/screens/home/policies.dart';
 import 'package:taxc/screens/home/rules.dart';
 import 'package:taxc/screens/home/settings.dart';
 import 'package:taxc/screens/home/sidebar/sidebarlayout.dart';
+import 'package:taxc/screens/home/tax.dart';
 import 'package:taxc/services/auth.dart';
 import 'package:taxc/screens/home/constants.dart';
 import 'package:taxc/screens/home/profile.dart';
@@ -11,7 +12,10 @@ import 'package:taxc/shared/loading.dart';
 import 'package:taxc/services/database.dart';
 import 'package:taxc/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'help.dart';
+import 'ifaqs.dart';
 import 'itax.dart';
 
 void main() {
@@ -56,6 +60,7 @@ class _HomelayoutState  extends State<Homelayout> {
 
   GlobalKey<ScaffoldState> _stackKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0, _selectedindex = -1;
+  bool _toogle = true;
   dynamic _bottomSelect = MyApp2();
 
   showAlertDialog(BuildContext context) {
@@ -187,7 +192,7 @@ class _HomelayoutState  extends State<Homelayout> {
                         SizedBox(height: 10,),
                         Text("Tax", style: TextStyle(fontSize: 40,
                           fontWeight: FontWeight.bold,
-                          color: Colors.lightGreenAccent.shade400,),),
+                          color: Colors.lightBlueAccent.shade400,),),
                       ],
                     ),
                   ),
@@ -339,7 +344,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                       ),),
                                     onTap: () {
                                       setState(() {
-                                        _bottomSelect =Itax();
+                                        _bottomSelect =IncomeTax();
                                         _selectedindex = 4;
                                       });
                                       Navigator.pop(context);
@@ -379,6 +384,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     ),
                                     onTap: () {
                                       setState(() {
+                                        _bottomSelect = Help();
                                         _selectedindex = 6;
                                       });
                                       Navigator.pop(context);
@@ -395,6 +401,7 @@ class _HomelayoutState  extends State<Homelayout> {
                                     ),
                                     onTap: () {
                                       setState(() {
+                                        _bottomSelect = Faqs();
                                         _selectedindex = 7;
                                       });
                                       Navigator.pop(context);
@@ -778,7 +785,7 @@ class CategoriesScroller extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          "Updates",
+                          "of Tax",
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ],
@@ -844,16 +851,8 @@ class GreenPay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text( ">While the income tax act ,1961 is the law enacted by the legislature for governing"
-          "and administering income taxes in india,Income Tax Rules,1962"
-          "has been framed to help apply and enforce the law contained in the Act."
-          "Further,the rules cannot be read independently"
-          "                                        >Everyone who earns or gets an income in india is subject to income tax"
-          "Your income could be salary,pension or could be from savings account that's quietly accumulating a 4% interest"
-          "                      >Tax payers in India, for the purpose of income tax includes:"
-          "1.Individual"
-          " ",
-          style: TextStyle(fontSize: 20,color: Colors.lightBlue[800]))),
+      child: Center(child: Text("While the Income Tax Act, 1961 is the law enacted by the legislature for governing and administering income taxes in India, Income Tax Rules, 1962 has been framed to help apply and enforce the law contained in the Act. Further, the Rules cannot be read independently. They must be read in conjunction with the Act only. Further, the Rules must be within the framework of the Act and cannot override the provisions of the Act. For example, the Act lays down the law with regard to taxability of perquisites given by the employer to his employees as “salary”. However, it does not discuss how the perquisites must be valued. Such valuation is in turn prescribed under Rule 3 of the Income-tax Rules. ",
+          style: TextStyle(fontSize: 18,color: Colors.deepPurple[800]))),
     );
 
   }
@@ -863,8 +862,58 @@ class Contact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("1.Users for any tax related questions can contact 9380417069 ",style: TextStyle(fontSize: 40,color: Colors.lightBlue[800]))),
+      child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 60.0,),
+                Text(
+                  'contact',
+                  style: TextStyle(
+                    fontFamily: 'SourceSansPro',
+                    fontSize: 45,
+                  ),
+                ),
+                SizedBox(height: 60.0,),
+                Card(
+                  color: Colors.blue[100],
+                  margin:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.mail_sharp,
+                      color: Colors.red[900],
+                    ),
+                    title: Text(
+                      'gagan.cs18@bmsce.ac.in',
+                      style:
+                      TextStyle(fontFamily: 'BalooBhai', fontSize: 18.0),
+                    ),
+                    onTap: () => launch("mailto:gagan.cs18@bmsce.ac.in"),
+                  ),
+                ),
+                Card(
+                  color: Colors.blue[100],
+                  margin:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.phone,
+                      color: Colors.blueAccent[900],
+                    ),
+                    title: Text(
+                      '+91 9380417069',
+                      style:
+                      TextStyle(fontFamily: 'BalooBhai', fontSize: 18.0),
+                    ),
+                    onTap: () => launch("tel:+91 93804 17069"),
+                  ),
+                ),
+              ]
+          )
+      ),
     );
+
   }
 }
 
@@ -872,7 +921,40 @@ class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("Please leave any suggestions or complaints to gagan.cs18@bmsce.ac.in",style: TextStyle(fontSize: 40,color: Colors.lightBlue[800]))),
+      child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 60.0,),
+                Text(
+                  'throw any suggestions to improve our app or any issues faced',
+                  style: TextStyle(
+                    fontFamily: 'SourceSansPro',
+                    fontSize: 25,
+                  ),
+                ),
+                SizedBox(height: 60.0,),
+                Card(
+                  color: Colors.lightBlueAccent[100],
+                  margin:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.mail_sharp,
+                      color: Colors.teal[900],
+                    ),
+                    title: Text(
+                      'gagan.cs18@bmsce.ac.in',
+                      style:
+                      TextStyle(fontFamily: 'BalooBhai', fontSize: 18.0),
+                    ),
+                    onTap: () => launch("mailto:gagan.cs18@bmsce.ac.in"),
+                  ),
+                ),
+              ]
+          )
+      ),
     );
+
   }
 }
